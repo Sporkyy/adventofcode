@@ -7,6 +7,15 @@ const fuelRequired = mass => Math.trunc(mass / 3) - 2;
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+import { strictEqual, strict } from 'assert';
+
+strictEqual(fuelRequired(12), 2);
+strictEqual(fuelRequired(14), 2);
+strictEqual(fuelRequired(1969), 654);
+strictEqual(fuelRequired(100756), 33583);
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 const masses = [
   51360,
   95527,
@@ -109,16 +118,5 @@ const masses = [
   76924,
   130449,
 ];
-
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-import { strictEqual, strict } from 'assert';
-
-strictEqual(fuelRequired(12), 2);
-strictEqual(fuelRequired(14), 2);
-strictEqual(fuelRequired(1969), 654);
-strictEqual(fuelRequired(100756), 33583);
-
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 console.log(masses.map(fuelRequired).reduce((acc, curr) => acc + curr));
