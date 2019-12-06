@@ -1,6 +1,14 @@
-import input from './day-2-input';
+// Day 2: Inventory Management System
+// https://adventofcode.com/2018/day/2
 
-const ids = input.split(/\n/);
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+import fs from 'fs';
+
+const ids = fs
+  .readFileSync('2018-day-2-input.txt')
+  .toString()
+  .split('\n');
 
 // const ids = ['abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz'];
 
