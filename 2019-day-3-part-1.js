@@ -65,7 +65,7 @@ const distance = (w1, w2) => {
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-import { strictEqual } from 'assert';
+import { strictEqual, strict } from 'assert';
 
 strictEqual(distance(['R8', 'U5', 'L5', 'D3'], ['U7', 'R6', 'D4', 'L4']), 6);
 
@@ -107,4 +107,6 @@ const [wire1, wire2] = fs
   .split('\n')
   .map(s => s.split(','));
 
-console.log(distance(wire1, wire2));
+// console.log(distance(wire1, wire2));
+
+strictEqual(distance(wire1, wire2), 5357);
