@@ -194,6 +194,45 @@
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+// const move = (direction, coords) =>
+//   ({
+//     U: ({ x, y }) => ({ x, y: y + 1 }),
+//     D: ({ x, y }) => ({ x, y: y - 1 }),
+//     R: ({ x, y }) => ({ x: x + 1, y }),
+//     L: ({ x, y }) => ({ x: x - 1, y }),
+//   }[direction](coords));
+
+// const toPoints = (wire, start = { x: 0, y: 0 }) =>
+//   wire.reduce((acc, curr) => {
+//     for (let i = 0; i < Number(curr.slice(1)); i++) {
+//       start = move(curr[0], start);
+//       acc.push(JSON.stringify(start));
+//     }
+//     return acc;
+//   }, []);
+
+// const distance = (...wires) => {
+//   const points = wires.map(wire => toPoints(wire));
+
+//   // console.log(points);
+
+//   // console.log(points.reduce((acc, curr) => acc.filter(x => curr.includes(x))));
+
+//   const firstIntersection = points.reduce((acc, curr) =>
+//     acc.filter(x => curr.includes(x)),
+//   )[0];
+
+//   // console.log(firstIntersection);
+
+//   // console.log(points.map(curr => curr.indexOf(firstIntersection) + 1));
+
+//   return points
+//     .map(curr => curr.indexOf(firstIntersection) + 1)
+//     .reduce((acc, curr) => acc + curr);
+// };
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 const move = (direction, coords) =>
   ({
     U: ({ x, y }) => ({ x, y: y + 1 }),
@@ -214,17 +253,17 @@ const toPoints = (wire, start = { x: 0, y: 0 }) =>
 const distance = (...wires) => {
   const points = wires.map(wire => toPoints(wire));
 
-  // console.log(points);
+  console.log(points);
 
-  // console.log(points.reduce((acc, curr) => acc.filter(x => curr.includes(x))));
+  console.log(points.reduce((acc, curr) => acc.filter(x => curr.includes(x))));
 
   const firstIntersection = points.reduce((acc, curr) =>
     acc.filter(x => curr.includes(x)),
   )[0];
 
-  // console.log(firstIntersection);
+  console.log(firstIntersection);
 
-  // console.log(points.map(curr => curr.indexOf(firstIntersection) + 1));
+  console.log(points.map(curr => curr.indexOf(firstIntersection) + 1));
 
   return points
     .map(curr => curr.indexOf(firstIntersection) + 1)
@@ -235,35 +274,64 @@ const distance = (...wires) => {
 
 import { strictEqual } from 'assert';
 
-strictEqual(distance(['R8', 'U5', 'L5', 'D3'], ['U7', 'R6', 'D4', 'L4']), 30);
+//    012345678
+//   ...........
+// 7 .+-----+...
+// 6 .|.....|...
+// 5 .|..+--X-+.
+// 4 .|..|..|.|.
+// 3 .|.-X--+.|.
+// 2 .|..|....|.
+// 1 .|.......|.
+// 0 .o-------+.
+//   ...........
 
-strictEqual(
-  distance(
-    ['R75', 'D30', 'R83', 'U83', 'L12', 'D49', 'R71', 'U7', 'L72'],
-    ['U62', 'R66', 'U55', 'R34', 'D71', 'R55', 'D58', 'R83'],
-  ),
-  610,
-);
+// strictEqual(distance(['R8', 'U5', 'L5', 'D3'], ['U7', 'R6', 'D4', 'L4']), 30);
 
-strictEqual(
-  distance(
-    [
-      'R98',
-      'U47',
-      'R26',
-      'D63',
-      'R33',
-      'U87',
-      'L62',
-      'D20',
-      'R33',
-      'U53',
-      'R51',
-    ],
-    ['U98', 'R91', 'D20', 'R16', 'D67', 'R40', 'U7', 'R15', 'U6', 'R7'],
-  ),
-  410,
-);
+//     | -1 | 0 |   1 |   2 | 3 |
+//     | -- | - | --- | --- | - |
+//   3 |    |   |     |     |   |  3
+//   2 |    |   |   6 | 7,8 |   |  2
+//   1 |    | 1 | 3,4 |   5 |   |  1
+//   0 |    | o |   2 |     |   |  0
+//  -1 |    |   |     |     |   | -1
+//     | -- | - | --- | --- | - |
+//     | -1 | 0 |   1 |   2 | 3 |
+
+strictEqual(distance(['U1', 'R2', 'U1'], ['R1', 'U2', 'R1']), 4);
+
+//    | -2 |    -1 |     0 |   1 |    2 | 3 |
+//    | -- | ----- | ---- | ---- | ---- | - |
+//  3 |    |       |      |      |      |   |  3
+//  2 |    |    14 | 3,12 | 5,10 |  7,8 |   |  2
+//  1 |    |    16 |    1 |      |  6,9 |   |  1
+//  0 |    |    18 |    o |    2 | 4,11 |   |  0
+// -1 |    | 19,20 |   17 |   15 |   13 |   | -1
+// -2 |    |       |      |      |      |   | -2
+//    | -- | ----- | ---- | ---- | ---- | - |
+//    | -2 |    -1 |    0 |    1 |    2 | 3 |
+
+strictEqual(distance(['U2', 'R2', 'D3', 'L3'], ['R2', 'U2', 'L3', 'D3']), 8);
+
+// strictEqual(
+//   distance(
+//     [
+//       'R98',
+//       'U47',
+//       'R26',
+//       'D63',
+//       'R33',
+//       'U87',
+//       'L62',
+//       'D20',
+//       'R33',
+//       'U53',
+//       'R51',
+//     ],
+//     ['U98', 'R91', 'D20', 'R16', 'D67', 'R40', 'U7', 'R15', 'U6', 'R7'],
+//   ),
+//   410,
+// );
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -275,27 +343,12 @@ const [wire1, wire2] = fs
   .split('\n')
   .map(s => s.split(','));
 
-console.log(distance(wire1, wire2));
+// console.log(distance(wire1, wire2));
 
 // strictEqual(distance(wire1, wire2), 101956);
 
 // Right: 101956 😕
+// Wrong: 102430 😡
 // Wrong: 102432 😡
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-/*
-
-   012345678
-  ...........
-7 .+-----+...
-6 .|.....|...
-5 .|..+--X-+.
-4 .|..|..|.|.
-3 .|.-X--+.|.
-2 .|..|....|.
-1 .|.......|.
-0 .o-------+.
-  ...........
-
-*/
