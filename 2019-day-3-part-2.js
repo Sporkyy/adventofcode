@@ -140,53 +140,92 @@
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-const toPoints = wire => {
-  let point = { x: 0, y: 0 };
-  const moves = {
-    U: ({ x, y }) => ({ x: x, y: y + 1 }),
-    D: ({ x, y }) => ({ x: x, y: y - 1 }),
-    R: ({ x, y }) => ({ x: x + 1, y: y }),
-    L: ({ x, y }) => ({ x: x - 1, y: y }),
-  };
-  // console.log(moves['U']({ x: 0, y: 0 }));
-  const points = wire.reduce((acc, curr) => {
-    const [direction, steps] = [curr[0], curr.slice(1)];
-    // console.log(direction, steps);
-    for (let i = 0; i < steps; i++) {
-      point = moves[direction](point);
-      acc.push(JSON.stringify(point));
+// const toPoints = wire => {
+//   let point = { x: 0, y: 0 };
+//   const moves = {
+//     U: ({ x, y }) => ({ x: x, y: y + 1 }),
+//     D: ({ x, y }) => ({ x: x, y: y - 1 }),
+//     R: ({ x, y }) => ({ x: x + 1, y: y }),
+//     L: ({ x, y }) => ({ x: x - 1, y: y }),
+//   };
+//   // console.log(moves['U']({ x: 0, y: 0 }));
+//   const points = wire.reduce((acc, curr) => {
+//     const [direction, steps] = [curr[0], curr.slice(1)];
+//     // console.log(direction, steps);
+//     for (let i = 0; i < steps; i++) {
+//       point = moves[direction](point);
+//       acc.push(JSON.stringify(point));
+//     }
+//     return acc;
+//   }, []);
+//   // console.log(points);
+//   return points;
+// };
+
+// const distance = (...wires) => {
+//   const points = wires.map(wire => toPoints(wire));
+//   // console.log(points);
+//   const allPoints = points.reduce((acc, curr, idx) => {
+//     for (const point of curr) {
+//       if (acc.has(point)) acc.set(point, acc.get(point).add(idx));
+//       else acc.set(point, new Set([idx]));
+//     }
+//     return acc;
+//   }, new Map());
+//   // console.log(allPoints);
+//   let firstIntersection;
+//   for (const [point, idxs] of allPoints) {
+//     // console.log(idxs.size);
+//     if (idxs.size === wires.length) {
+//       firstIntersection = point;
+//       break;
+//     }
+//   }
+//   // console.log(firstIntersection);
+//   // console.log(
+//   //   points
+//   //     .map(curr => curr.indexOf(firstIntersection) + 1)
+//   //     .reduce((acc, curr) => acc + curr),
+//   // );
+//   return points
+//     .map(curr => curr.indexOf(firstIntersection) + 1)
+//     .reduce((acc, curr) => acc + curr);
+// };
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+const move = (direction, coords) =>
+  ({
+    U: ({ x, y }) => ({ x, y: y + 1 }),
+    D: ({ x, y }) => ({ x, y: y - 1 }),
+    R: ({ x, y }) => ({ x: x + 1, y }),
+    L: ({ x, y }) => ({ x: x - 1, y }),
+  }[direction](coords));
+
+const toPoints = (wire, start = { x: 0, y: 0 }) =>
+  wire.reduce((acc, curr) => {
+    for (let i = 0; i < Number(curr.slice(1)); i++) {
+      start = move(curr[0], start);
+      acc.push(JSON.stringify(start));
     }
     return acc;
   }, []);
-  // console.log(points);
-  return points;
-};
 
 const distance = (...wires) => {
   const points = wires.map(wire => toPoints(wire));
+
   // console.log(points);
-  const allPoints = points.reduce((acc, curr, idx) => {
-    for (const point of curr) {
-      if (acc.has(point)) acc.set(point, acc.get(point).add(idx));
-      else acc.set(point, new Set([idx]));
-    }
-    return acc;
-  }, new Map());
-  // console.log(allPoints);
-  let firstIntersection;
-  for (const [point, idxs] of allPoints) {
-    // console.log(idxs.size);
-    if (idxs.size === wires.length) {
-      firstIntersection = point;
-      break;
-    }
-  }
+
+  // console.log(points.reduce((acc, curr) => acc.filter(x => curr.includes(x))));
+
+  const firstIntersection = points.reduce((acc, curr) =>
+    acc.filter(x => curr.includes(x)),
+  )[0];
+
   // console.log(firstIntersection);
-  // console.log(
-  //   points
-  //     .map(curr => curr.indexOf(firstIntersection) + 1)
-  //     .reduce((acc, curr) => acc + curr),
-  // );
+
+  // console.log(points.map(curr => curr.indexOf(firstIntersection) + 1));
+
   return points
     .map(curr => curr.indexOf(firstIntersection) + 1)
     .reduce((acc, curr) => acc + curr);
@@ -236,9 +275,9 @@ const [wire1, wire2] = fs
   .split('\n')
   .map(s => s.split(','));
 
-// console.log(distance(wire1, wire2));
+console.log(distance(wire1, wire2));
 
-strictEqual(distance(wire1, wire2), 101956);
+// strictEqual(distance(wire1, wire2), 101956);
 
 // Right: 101956 😕
 // Wrong: 102432 😡
