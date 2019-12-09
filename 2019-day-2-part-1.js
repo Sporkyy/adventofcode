@@ -1,4 +1,4 @@
-// Day 2: 1202 Program Alarm
+// Day 2: 1202 Program Alarm - Part 1
 // https://adventofcode.com/2019/day/2
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

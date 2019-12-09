@@ -1,4 +1,4 @@
-// Day 2: Inventory Management System
+// Day 2: Inventory Management System - Part 1
 // https://adventofcode.com/2018/day/2
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
